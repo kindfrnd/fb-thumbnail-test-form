@@ -4,7 +4,7 @@
 <body>
 <h2>FB Video Transfer POST test</h2>
 <p>Transfers video bytes (raw body, fetch) to the rupload URL from a resumable upload start.</p>
-<label>Upload URL: <input type="text" id="url" size="110" value="https://rupload.facebook.com/video-upload/v27.0/2286481131917023"></label><br><br>
+<label>Upload URL: <input type="text" id="url" size="110" value="https://rupload.facebook.com/video-upload/v27.0/1178896244571480"></label><br><br>
 <label>Access token: <input type="text" id="tok" size="90"></label><br><br>
 <label>Video file: <input type="file" id="file"></label><br><br>
 <button id="go" type="button">Transfer bytes</button>
@@ -30,12 +30,14 @@ document.getElementById('go').addEventListener('click', async function(){
 <h2>Plain form POST (multipart) to rupload</h2>
 <p>No CORS preflight: posts the file as multipart to the upload URL, with the token as a query parameter and the phase/offsets as hidden fields.</p>
 <form id="f2" method="POST" enctype="multipart/form-data">
-  <label>Upload URL: <input type="text" id="url2" size="110" value="https://rupload.facebook.com/video-upload/v27.0/2286481131917023"></label><br><br>
+  <label>Upload URL: <input type="text" id="url2" size="110" value="https://rupload.facebook.com/video-upload/v27.0/1178896244571480"></label><br><br>
   <label>Access token: <input type="text" id="tok2" size="90"></label><br><br>
   <label>Video file: <input type="file" name="file"></label><br><br>
-  <input type="hidden" name="upload_phase" value="transfer">
-  <input type="hidden" name="start_offset" value="0">
-  <input type="hidden" name="end_offset" value="17498">
+  <input type="hidden" name="X-Facebook-Upload-Phase" value="transfer">
+  <input type="hidden" name="X-Facebook-Upload-Start-Offset" value="0">
+  <input type="hidden" name="X-Facebook-Upload-End-Offset" value="17498">
+  <input type="hidden" name="offset" value="0">
+  <input type="hidden" name="file_size" value="17498">
   <button type="submit">POST form to rupload</button>
 </form>
 <script>
@@ -48,7 +50,7 @@ document.getElementById('f2').addEventListener('submit', function(e){
 <hr>
 <h2>Fetch diagnostics</h2>
 <p>Tests whether fetch to rupload works from this origin.</p>
-<label>Upload URL: <input type="text" id="durl" size="110" value="https://rupload.facebook.com/video-upload/v27.0/2286481131917023"></label><br><br>
+<label>Upload URL: <input type="text" id="durl" size="110" value="https://rupload.facebook.com/video-upload/v27.0/1178896244571480"></label><br><br>
 <button id="d1" type="button">Test 1: simple POST, text body, no custom headers</button>
 <button id="d2" type="button">Test 2: POST with Authorization header only</button>
 <pre id="dout"></pre>
