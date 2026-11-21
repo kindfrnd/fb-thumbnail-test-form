@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>FB Video Upload POST test</title></head>
+<body>
+<h2>FB Video Upload POST test</h2>
+<p>Posts a video file as real file data (multipart) to a Facebook Page as a Reel (draft, unpublished).</p>
+<form id="f" method="POST" enctype="multipart/form-data">
+  <label>Page ID: <input type="text" id="pid" value="1343606322177357"></label><br><br>
+  <label>Access token: <input type="text" name="access_token" value="" size="90"></label><br><br>
+  <label>App secret proof: <input type="text" name="appsecret_proof" value="" size="90"></label><br><br>
+  <label>Video file: <input type="file" name="source"></label><br><br>
+  <input type="hidden" name="published" value="false">
+  <button type="submit">POST video (draft Reel)</button>
+</form>
+<script>
+document.getElementById('f').addEventListener('submit', function(e){
+  var pid = document.getElementById('pid').value.trim();
+  if(!pid){ e.preventDefault(); alert('Page ID required'); return; }
+  this.action = 'https://graph.facebook.com/v27.0/' + encodeURIComponent(pid) + '/video_reels';
+});
+</script>
+</body>
+</html>
