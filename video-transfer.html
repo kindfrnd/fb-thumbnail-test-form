@@ -45,5 +45,28 @@ document.getElementById('f2').addEventListener('submit', function(e){
   this.action = url + (url.indexOf('?') === -1 ? '?' : '&') + 'access_token=' + encodeURIComponent(tok);
 });
 </script>
+<hr>
+<h2>Fetch diagnostics</h2>
+<p>Tests whether fetch to rupload works from this origin.</p>
+<label>Upload URL: <input type="text" id="durl" size="110" value="https://rupload.facebook.com/video-upload/v27.0/2286481131917023"></label><br><br>
+<button id="d1" type="button">Test 1: simple POST, text body, no custom headers</button>
+<button id="d2" type="button">Test 2: POST with Authorization header only</button>
+<pre id="dout"></pre>
+<script>
+async function diag(label, opts){
+  var out = document.getElementById('dout');
+  var url = document.getElementById('durl').value.trim();
+  out.textContent = label + ': sending...';
+  try {
+    var res = await fetch(url, opts);
+    var txt = await res.text();
+    out.textContent = label + ': HTTP ' + res.status + '\n' + txt;
+  } catch(e) {
+    out.textContent = label + ': FETCH ERROR: ' + e;
+  }
+}
+document.getElementById('d1').addEventListener('click', function(){ diag('Test 1 (simple)', {method:'POST', body:'x'}); });
+document.getElementById('d2').addEventListener('click', function(){ diag('Test 2 (Authorization header)', {method:'POST', headers:{'Authorization':'OAuth TEST'}, body:'x'}); });
+</script>
 </body>
 </html>
