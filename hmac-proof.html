@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>appsecret_proof calculator</title>
+<style>body{font-family:system-ui,sans-serif;max-width:640px;margin:32px auto;padding:0 16px}label{display:block;margin:14px 0 4px;font-weight:600}input,textarea{width:100%;padding:8px;box-sizing:border-box}button{margin-top:16px;padding:10px 18px;font-size:16px}#out{margin-top:16px;word-break:break-all;background:#f2f2f2;padding:10px}</style>
+</head>
+<body>
+<h2>appsecret_proof calculator</h2>
+<p>Computes HMAC-SHA256 of the access token using the app secret. Everything runs in this browser — nothing is sent to any server.</p>
+<label for="token">Access token</label>
+<textarea id="token" rows="3" placeholder="Paste the user access token"></textarea>
+<label for="secret">App secret</label>
+<input id="secret" type="password" placeholder="Paste the app secret">
+<button id="go">Compute proof</button>
+<div id="out"></div>
+<script>
+document.getElementById('go').onclick = async () => {
+  const token = document.getElementById('token').value.trim();
+  const secret = document.getElementById('secret').value.trim();
+  const out = document.getElementById('out');
+  if (!token || !secret) { out.textContent = 'Paste both the token and the secret.'; return; }
+  try {
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey('raw', enc.encode(secret), {name:'HMAC', hash:'SHA-256'}, false, ['sign']);
+    const sig = await crypto.subtle.sign('HMAC', key, enc.encode(token));
+    const hex = [...new Uint8Array(sig)].map(b=>b.toString(16).padStart(2,'0')).join('');
+    out.textContent = hex;
+  } catch(e){ out.textContent = 'Error: ' + e.message; }
+};
+</script>
+</body>
+</html>
