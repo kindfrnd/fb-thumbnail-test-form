@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>FB Thumbnail POST test</title></head>
+<body>
+<h2>FB Thumbnail POST test</h2>
+<p>Posts a thumbnail image as real file data (multipart) to a Facebook video.</p>
+<form id="f" method="POST" enctype="multipart/form-data">
+  <label>Video ID: <input type="text" id="vid" value=""></label><br><br>
+  <label>Access token: <input type="text" name="access_token" value="" size="90"></label><br><br>
+  <label>Thumbnail image: <input type="file" name="source"></label><br><br>
+  <input type="hidden" name="is_preferred" value="true">
+  <button type="submit">POST thumbnail</button>
+</form>
+<script>
+document.getElementById('f').addEventListener('submit', function(e){
+  var vid = document.getElementById('vid').value.trim();
+  if(!vid){ e.preventDefault(); alert('Video ID required'); return; }
+  this.action = 'https://graph.facebook.com/v27.0/' + encodeURIComponent(vid) + '/thumbnails';
+});
+</script>
+</body>
+</html>
